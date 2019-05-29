@@ -1,5 +1,5 @@
 mdsdToolsEclipsePipeline {  
-	webserverDir = 'thirdparty-library'
-	updateSiteLocation = 'target/repository'
+    webserverDir = 'thirdparty-library'
+    updateSiteLocation = 'target/repository'
     skipCodeQuality = true
 } 
