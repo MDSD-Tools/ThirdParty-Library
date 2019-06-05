@@ -4,7 +4,7 @@
     <iu>
         <category name="all"/>
         <query>
-            <expression type="match">providedCapabilities.exists(p | p.namespace == 'org.eclipse.update.feature')</expression>
+            <expression type="match">providedCapabilities.all(p | p.namespace == 'org.eclipse.equinox.p2.iu')</expression>
         </query>
     </iu>
 </site>
