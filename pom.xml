@@ -10,6 +10,8 @@
 
   <properties>
     <org.mockito.junit.jupiter.version>2.23.0</org.mockito.junit.jupiter.version>
+    <org.apache.aries.spifly.dynamic.bundle.version>1.2.3</org.apache.aries.spifly.dynamic.bundle.version>
+    <org.apache.aries.util.version>1.1.1</org.apache.aries.util.version>
 
 
     <license.apache20>							Apache License${line.separator}
@@ -954,6 +956,27 @@ THE SOFTWARE.${line.separator}
                     <artifact>
                       <id>org.mockito:mockito-junit-jupiter:${org.mockito.junit.jupiter.version}</id>
                       <transitive>false</transitive>
+                      <source>true</source>
+                    </artifact>
+                  </artifacts>
+                </feature>
+                <feature>
+                  <id>org.apache.aries.spifly.dynamic.bundle.feature</id>
+                  <version>${org.apache.aries.spifly.dynamic.bundle.version}</version>
+                  <label>Apache SPI-Fly Dynamic Bundle</label>
+                  <providerName>${project.groupId}</providerName>
+                  <description>${project.description}</description>
+                  <license>${license.apache20}</license>
+                  <generateSourceFeature>true</generateSourceFeature>
+                  <artifacts>
+                    <artifact>
+                      <id>org.apache.aries.spifly:org.apache.aries.spifly.dynamic.bundle:${org.apache.aries.spifly.dynamic.bundle.version}</id>
+                      <transitive>true</transitive>
+                      <source>true</source>
+                    </artifact>
+                    <artifact>
+                      <id>org.apache.aries:org.apache.aries.util:${org.apache.aries.util.version}</id>
+                      <transitive>true</transitive>
                       <source>true</source>
                     </artifact>
                   </artifacts>
