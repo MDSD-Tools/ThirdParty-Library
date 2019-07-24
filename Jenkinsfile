@@ -1,8 +1,7 @@
-MDSDToolsMavenPipeline {
-    webserverDir = 'thirdparty-library'
-    updateSiteLocation = 'target/repository'
-    skipQualityMetrics = true
-    skipDeploy = false
-    skipNotification = false
-    notificationDefaultRecipient = 'a3JhY2hAZnppLmRl'
+MDSDToolsPipeline {
+    deployUpdatesite 'target/repository'
+    skipQualityMetrics true
+    skipDeploy false
+    skipNotification false
+    notifyDefault 'a3JhY2hAZnppLmRl'
 }
