@@ -3,4 +3,5 @@ MDSDToolsPipeline {
     buildWithGradle {}
     deployUpdatesite 'build/updatesite'
     skipQualityMetrics true
+    skipDeploy false
 }
