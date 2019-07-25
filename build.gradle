@@ -1,0 +1,24 @@
+plugins {
+	id 'org.standardout.bnd-platform' version "1.7.0"	
+}
+
+repositories {
+	mavenCentral()
+}
+
+defaultTasks 'clean', 'updateSite'
+
+def spiflyVersion = "1.2.3"
+
+platform {
+	useBndHashQualifiers = false
+	useFeatureHashQualifiers = false
+	eclipseMirror = "http://ftp.halifax.rwth-aachen.de/eclipse/technology/epp/downloads/release/2019-06/R/eclipse-java-2019-06-R-linux-gtk-x86_64.tar.gz"
+}
+
+platform {
+	feature(id: "org.apache.aries.spifly.dynamic.feature", name: "Apache Aries SPI Fly Dynamic Bundle", version: "$spiflyVersion") {
+		bundle "org.apache.aries.spifly:org.apache.aries.spifly.dynamic.bundle:$spiflyVersion"
+		bundle 'org.apache.aries:org.apache.aries.util:1.1.1'
+	}
+}

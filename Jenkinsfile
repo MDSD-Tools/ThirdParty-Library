@@ -1,6 +1,6 @@
-MDSDToolsDockerizedMavenPipeline {
-    webserverDir = 'thirdparty-library'
-    updateSiteLocation = 'target/repository'
-    skipQualityMetrics = true
-    skipDeploy = false
+@Library('MDSD.tools Lib@gradleBuild')
+MDSDToolsPipeline {
+    buildWithGradle {}
+    deployUpdatesite 'build/updatesite'
+    skipQualityMetrics true
 }
