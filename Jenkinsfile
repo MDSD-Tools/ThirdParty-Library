@@ -1,4 +1,4 @@
-@Library('MDSD.tools Lib@gradleBuild')
+@Library('MDSDtoolsLib@gradleBuild') _
 MDSDToolsPipeline {
     buildWithGradle {}
     deployUpdatesite 'build/updatesite'
