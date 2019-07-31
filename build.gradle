@@ -6,23 +6,22 @@ repositories {
 	mavenCentral()
 }
 
-defaultTasks 'clean', 'updateSite'
-
 def spiflyVersion = "1.2.3"
 def guiceVersion = "4.2.2"
 def guiceGuavaVersion = "25.1-jre"
+
+defaultTasks 'clean', 'updateSite', 'patchSpiFlyP2Inf'
 
 platform {
 	useBndHashQualifiers = false
 	useFeatureHashQualifiers = false
 	eclipseMirror = "http://ftp.halifax.rwth-aachen.de/eclipse/technology/epp/downloads/release/2019-06/R/eclipse-java-2019-06-R-linux-gtk-x86_64.tar.gz"
-}
-
-platform {
+	
 	feature(id: "org.apache.aries.spifly.dynamic.feature", name: "Apache Aries SPI Fly Dynamic Bundle", version: "$spiflyVersion") {
-		bundle "org.apache.aries.spifly:org.apache.aries.spifly.dynamic.bundle:$spiflyVersion"
 		bundle 'org.apache.aries:org.apache.aries.util:1.1.1'
+		bundle "org.apache.aries.spifly:org.apache.aries.spifly.dynamic.bundle:$spiflyVersion"
 	}
+
 	feature(id: "com.google.inject.guice.feature", name: "Google Guice Feature", version: "$guiceVersion") {
 		plugin "com.google.inject:guice:$guiceVersion:no_aop" , {
 			exclude group: 'aopalliance', module: 'aopalliance'
@@ -41,5 +40,11 @@ platform {
 			exclude group: 'org.codehaus.mojo', module: 'animal-sniffer-annotations'
 		}
 	}
+}
 
+task patchSpiFlyP2Inf(type: Zip) {
+	archiveFileName = "org.apache.aries.spifly.dynamic.bundle_${spiflyVersion}.jar"
+	destinationDirectory = file("build/updatesite/plugins")
+	from zipTree("build/plugins/org.apache.aries.spifly.dynamic.bundle_${spiflyVersion}.jar")
+	from zipTree("org.apache.aries.spifly.dynamic.bundle.p2inf.patch.jar")
 }
