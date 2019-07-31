@@ -9,6 +9,8 @@ repositories {
 defaultTasks 'clean', 'updateSite'
 
 def spiflyVersion = "1.2.3"
+def guiceVersion = "4.2.2"
+def guiceGuavaVersion = "26.0-jre"
 
 platform {
 	useBndHashQualifiers = false
@@ -21,4 +23,23 @@ platform {
 		bundle "org.apache.aries.spifly:org.apache.aries.spifly.dynamic.bundle:$spiflyVersion"
 		bundle 'org.apache.aries:org.apache.aries.util:1.1.1'
 	}
+	feature(id: "com.google.inject.guice.feature", name: "Google Guice Feature", version: "$guiceVersion") {
+		plugin "com.google.inject:guice:$guiceVersion:no_aop" , {
+			exclude group: 'aopalliance', module: 'aopalliance'
+			exclude group: 'javax.inject', module: 'javax.inject'
+			exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
+			exclude group: 'com.google.j2objc', module: 'j2objc-annotations'
+			exclude group: 'com.google.code.findbugs', module: 'jsr305'
+			exclude group: 'org.checkerframework', module: 'checker-qual'
+			exclude group: 'org.codehaus.mojo', module: 'animal-sniffer-annotations'
+		}
+		plugin "com.google.guava:guava:$guiceGuavaVersion" , {
+			exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
+			exclude group: 'com.google.j2objc', module: 'j2objc-annotations'
+			exclude group: 'com.google.code.findbugs', module: 'jsr305'
+			exclude group: 'org.checkerframework', module: 'checker-qual'
+			exclude group: 'org.codehaus.mojo', module: 'animal-sniffer-annotations'
+		}
+	}
+
 }
