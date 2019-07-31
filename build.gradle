@@ -10,7 +10,7 @@ defaultTasks 'clean', 'updateSite'
 
 def spiflyVersion = "1.2.3"
 def guiceVersion = "4.2.2"
-def guiceGuavaVersion = "26.0-jre"
+def guiceGuavaVersion = "25.1-jre"
 
 platform {
 	useBndHashQualifiers = false
