@@ -51,6 +51,6 @@ task patchSpiFlyP2Inf(type: Zip) {
 	archiveFileName = "org.apache.aries.spifly.dynamic.bundle_${spiflyVersion}.jar"
 	destinationDirectory = file("build/plugins")
 	from zipTree("build/tmp/plugins/org.apache.aries.spifly.dynamic.bundle_${spiflyVersion}.jar")
-	from zipTree("org.apache.aries.spifly.dynamic.bundle.p2inf.patch.jar")
+	from "org.apache.aries.spifly.dynamic.bundle.p2inf.patch"
 }
 
