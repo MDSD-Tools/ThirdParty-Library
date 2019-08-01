@@ -10,7 +10,7 @@ def spiflyVersion = "1.2.3"
 def guiceVersion = "4.2.2"
 def guiceGuavaVersion = "25.1-jre"
 
-defaultTasks 'clean', 'updateSite', 'patchSpiFlyP2Inf'
+defaultTasks 'clean', 'bundles', 'patchSpiFlyP2Inf', 'copyPatchedBundle', 'updateSite'
 
 platform {
 	useBndHashQualifiers = false
@@ -44,7 +44,12 @@ platform {
 
 task patchSpiFlyP2Inf(type: Zip) {
 	archiveFileName = "org.apache.aries.spifly.dynamic.bundle_${spiflyVersion}.jar"
-	destinationDirectory = file("build/updatesite/plugins")
+	destinationDirectory = file("build/tmp/plugins")
 	from zipTree("build/plugins/org.apache.aries.spifly.dynamic.bundle_${spiflyVersion}.jar")
 	from zipTree("org.apache.aries.spifly.dynamic.bundle.p2inf.patch.jar")
+}
+
+task copyPatchedBundle(type: Copy) {
+	from file("build/tmp/plugins/org.apache.aries.spifly.dynamic.bundle_${spiflyVersion}.jar")
+	into file("build/plugins/")
 }
