@@ -9,6 +9,7 @@ repositories {
 def spiflyVersion = "1.2.3"
 def guiceVersion = "4.2.2"
 def guiceGuavaVersion = "25.1-jre"
+def javatuplesVersion = '1.2'
 
 defaultTasks 'clean', 'bundles', 'copyPatchedBundle', 'patchSpiFlyP2Inf', 'updateSite'
 
@@ -16,6 +17,10 @@ platform {
 	useBndHashQualifiers = false
 	useFeatureHashQualifiers = false
 	eclipseMirror = "http://ftp.halifax.rwth-aachen.de/eclipse/technology/epp/downloads/release/2019-06/R/eclipse-java-2019-06-R-linux-gtk-x86_64.tar.gz"
+
+	feature(id: "org.javatuples.feature", name: "Javatuples Feature", version: "$javatuplesVersion") {
+		bundle "org.javatuples:javatuples:$javatuplesVersion"
+	}
 	
 	feature(id: "org.apache.aries.spifly.dynamic.feature", name: "Apache Aries SPI Fly Dynamic Bundle", version: "$spiflyVersion") {
 		bundle 'org.apache.aries:org.apache.aries.util:1.1.1'
