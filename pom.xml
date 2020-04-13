@@ -14,6 +14,7 @@
     <org.mockito.objenesis.version>3.1</org.mockito.objenesis.version>
     <org.apache.aries.spifly.dynamic.bundle.version>1.2.3</org.apache.aries.spifly.dynamic.bundle.version>
     <org.apache.aries.util.version>1.1.1</org.apache.aries.util.version>
+    <org.hamcrest.version>2.2</org.hamcrest.version>
 
 
     <license.apache20>							Apache License${line.separator}
@@ -927,6 +928,35 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,${l
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN${line.separator}
 THE SOFTWARE.${line.separator}
 </license.mockito>
+<license.hamcrest>
+BSD License${line.separator}
+${line.separator}
+Copyright (c) 2000-2015 www.hamcrest.org${line.separator}
+All rights reserved.${line.separator}
+${line.separator}
+Redistribution and use in source and binary forms, with or without${line.separator}
+modification, are permitted provided that the following conditions are met:${line.separator}
+${line.separator}
+Redistributions of source code must retain the above copyright notice, this list of${line.separator}
+conditions and the following disclaimer. Redistributions in binary form must reproduce${line.separator}
+the above copyright notice, this list of conditions and the following disclaimer in${line.separator}
+the documentation and/or other materials provided with the distribution.${line.separator}
+${line.separator}
+Neither the name of Hamcrest nor the names of its contributors may be used to endorse${line.separator}
+or promote products derived from this software without specific prior written${line.separator}
+permission.${line.separator}
+${line.separator}
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY${line.separator}
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES${line.separator}
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT${line.separator}
+SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,${line.separator}
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED${line.separator}
+TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR${line.separator}
+BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN${line.separator}
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY${line.separator}
+WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH${line.separator}
+DAMAGE.${line.separator}
+</license.hamcrest>
 		
 	</properties>
 
@@ -946,6 +976,22 @@ THE SOFTWARE.${line.separator}
             <configuration>
               <categoryFileURL>${project.basedir}/category.xml</categoryFileURL>
               <featureDefinitions>
+                <feature>
+                  <id>org.hamcrest.feature</id>
+                  <version>${org.hamcrest.version}</version>
+                  <label>Hamcrest Matchers</label>
+                  <providerName>${project.groupId}</providerName>
+                  <description>${project.description}</description>
+                  <license>${license.hamcrest}</license>
+                  <generateSourceFeature>true</generateSourceFeature>
+                  <artifacts>
+                    <artifact>
+                      <id>org.hamcrest:hamcrest:${org.hamcrest.version}</id>
+                      <transitive>false</transitive>
+                      <source>true</source>
+                    </artifact>
+                  </artifacts>
+                </feature>
                 <feature>
                   <id>org.mockito.junit.jupiter.feature</id>
                   <version>${org.mockito.version}</version>
