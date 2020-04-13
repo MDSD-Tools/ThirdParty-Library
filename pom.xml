@@ -9,7 +9,9 @@
   <packaging>pom</packaging>
 
   <properties>
-    <org.mockito.junit.jupiter.version>2.23.0</org.mockito.junit.jupiter.version>
+    <org.mockito.version>3.3.3</org.mockito.version>
+    <org.mockito.byte-buddy.version>1.10.9</org.mockito.byte-buddy.version>
+    <org.mockito.objenesis.version>3.1</org.mockito.objenesis.version>
     <org.apache.aries.spifly.dynamic.bundle.version>1.2.3</org.apache.aries.spifly.dynamic.bundle.version>
     <org.apache.aries.util.version>1.1.1</org.apache.aries.util.version>
 
@@ -946,15 +948,35 @@ THE SOFTWARE.${line.separator}
               <featureDefinitions>
                 <feature>
                   <id>org.mockito.junit.jupiter.feature</id>
-                  <version>${org.mockito.junit.jupiter.version}</version>
-                  <label>Mockito JUnit5 Extension</label>
+                  <version>${org.mockito.version}</version>
+                  <label>Mockito with JUnit5 Extension</label>
                   <providerName>${project.groupId}</providerName>
                   <description>${project.description}</description>
                   <license>${license.mockito}</license>
                   <generateSourceFeature>true</generateSourceFeature>
                   <artifacts>
                     <artifact>
-                      <id>org.mockito:mockito-junit-jupiter:${org.mockito.junit.jupiter.version}</id>
+                      <id>org.mockito:mockito-core:${org.mockito.version}</id>
+                      <transitive>false</transitive>
+                      <source>true</source>
+                    </artifact>
+                    <artifact>
+                      <id>org.mockito:mockito-junit-jupiter:${org.mockito.version}</id>
+                      <transitive>false</transitive>
+                      <source>true</source>
+                    </artifact>
+                    <artifact>
+                      <id>net.bytebuddy:byte-buddy:${org.mockito.byte-buddy.version}</id>
+                      <transitive>false</transitive>
+                      <source>true</source>
+                    </artifact>
+                    <artifact>
+                      <id>net.bytebuddy:byte-buddy-agent:${org.mockito.byte-buddy.version}</id>
+                      <transitive>false</transitive>
+                      <source>true</source>
+                    </artifact>
+                    <artifact>
+                      <id>org.objenesis:objenesis:${org.mockito.objenesis.version}</id>
                       <transitive>false</transitive>
                       <source>true</source>
                     </artifact>
