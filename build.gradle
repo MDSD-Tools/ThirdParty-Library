@@ -1,33 +1,62 @@
-plugins {
-	id 'org.standardout.bnd-platform' version "1.7.0"	
+buildscript {
+	repositories {
+		maven {
+			url "https://maven.pkg.github.com/sdkrach/bnd-platform"
+			credentials {
+				username = githubUser ?: System.getenv("GITHUB_PACKAGES_USER")
+				password = githubToken ?: System.getenv("GITHUB_PACKAGES_TOKEN")
+			}
+		}
+		jcenter()
+	}
+	dependencies {
+		classpath 'org.standardout:bnd-platform:1.8.1'
+	}
 }
+
+apply plugin: 'org.standardout.bnd-platform'
 
 repositories {
 	mavenCentral()
 }
 
+def providerName = 'tools.mdsd.thirdparty-library'
 def spiflyVersion = "1.2.3"
-def guiceVersion = "4.2.2"
-def guiceGuavaVersion = "25.1-jre"
+def guiceVersion = "4.2.3"
 def javatuplesVersion = '1.2'
+def byteBuddyVersion = '1.10.9'
+def mockitoVersion = '3.3.3'
+def hamcrestVersion = '2.2'
 
 defaultTasks 'clean', 'bundles', 'copyPatchedBundle', 'patchSpiFlyP2Inf', 'updateSite'
 
 platform {
 	useBndHashQualifiers = false
 	useFeatureHashQualifiers = false
-	eclipseMirror = "http://ftp.halifax.rwth-aachen.de/eclipse/technology/epp/downloads/release/2019-06/R/eclipse-java-2019-06-R-linux-gtk-x86_64.tar.gz"
+	eclipseMirror = 'http://ftp.halifax.rwth-aachen.de/eclipse/technology/epp/downloads/release/2019-06/R/eclipse-java-2019-06-R-linux-gtk-x86_64.tar.gz'
 
-	feature(id: "org.javatuples.feature", name: "Javatuples Feature", version: "$javatuplesVersion") {
+	feature(id: 'org.javatuples.feature',
+			name: 'Javatuples Feature',
+			version: javatuplesVersion,
+			provider: providerName,
+			license: 'https://raw.githubusercontent.com/javatuples/javatuples/master/LICENSE.txt'.toURL().getText()) {
 		bundle "org.javatuples:javatuples:$javatuplesVersion"
 	}
 	
-	feature(id: "org.apache.aries.spifly.dynamic.feature", name: "Apache Aries SPI Fly Dynamic Bundle", version: "$spiflyVersion") {
+	feature(id: 'org.apache.aries.spifly.dynamic.feature',
+			name: 'Apache Aries SPI Fly Dynamic Bundle',
+			version: spiflyVersion,
+			provider: providerName,
+			license: 'http://svn.apache.org/repos/asf/aries/trunk/spi-fly/LICENSE'.toURL().getText()) {
 		bundle 'org.apache.aries:org.apache.aries.util:1.1.1'
 		bundle "org.apache.aries.spifly:org.apache.aries.spifly.dynamic.bundle:$spiflyVersion"
 	}
 
-	feature(id: "com.google.inject.guice.feature", name: "Google Guice Feature", version: "$guiceVersion") {
+	feature(id: 'com.google.inject.guice.feature',
+			name: 'Google Guice Feature',
+			version: guiceVersion,
+			provider: providerName,
+			license: 'https://raw.githubusercontent.com/google/guice/master/COPYING'.toURL().getText()) {
 		plugin "com.google.inject:guice:$guiceVersion:no_aop" , {
 			exclude group: 'aopalliance', module: 'aopalliance'
 			exclude group: 'javax.inject', module: 'javax.inject'
@@ -37,13 +66,52 @@ platform {
 			exclude group: 'org.checkerframework', module: 'checker-qual'
 			exclude group: 'org.codehaus.mojo', module: 'animal-sniffer-annotations'
 		}
-		plugin "com.google.guava:guava:$guiceGuavaVersion" , {
-			exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
-			exclude group: 'com.google.j2objc', module: 'j2objc-annotations'
-			exclude group: 'com.google.code.findbugs', module: 'jsr305'
-			exclude group: 'org.checkerframework', module: 'checker-qual'
-			exclude group: 'org.codehaus.mojo', module: 'animal-sniffer-annotations'
+	}
+
+	feature(id: 'net.bytebuddy.byte-buddy.feature',
+			name: 'Byte-Buddy',
+			version: byteBuddyVersion,
+			provider: providerName,
+			license: 'https://raw.githubusercontent.com/raphw/byte-buddy/master/LICENSE'.toURL().getText()) {
+		plugin "net.bytebuddy:byte-buddy:$byteBuddyVersion"
+		plugin "net.bytebuddy:byte-buddy-agent:$byteBuddyVersion"
+	}
+
+	feature(id: 'org.mockito.core-with-junit-extension.feature',
+			name: 'Mockito with JUnit5 Extension',
+			version: mockitoVersion,
+			provider: providerName,
+			license: 'https://raw.githubusercontent.com/mockito/mockito/release/3.x/LICENSE'.toURL().getText()) {
+		merge (failOnDuplicate: false, collectServices: true) {
+			bundle "org.mockito:mockito-core:$mockitoVersion", {
+				exclude group: 'org.objenesis', module: 'objenesis'
+				exclude group: 'net.bytebuddy', module: 'byte-buddy'
+				exclude group: 'net.bytebuddy', module: 'byte-buddy-agent'
+			}
+			bundle "org.mockito:mockito-junit-jupiter:$mockitoVersion", {
+				exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
+				exclude group: 'org.mockito', module: 'mockito-core'
+			}
+
+			bnd {
+				symbolicName = 'org.mockito.mockito-merged'
+				bundleName = 'Mockito'
+				version = mockitoVersion
+
+				instruction 'Import-Package', 'net.bytebuddy.*;version="[1.6.0,2.0)"'
+				instruction 'Import-Package', 'org.objenesis;version="[2.5,3.0)"'
+				instruction 'Import-Package', '*;resolution:=optional'
+				instruction 'Export-Package', '!org.mockito.internal.*'
+				instruction 'Export-Package', "org.mockito.*;version=$mockitoVersion"
+			}
 		}
+	}
+	feature(id: 'org.hamcrest.feature',
+			name: 'Hamcrest Matchers',
+			version: hamcrestVersion,
+			provider: providerName,
+			license: 'https://raw.githubusercontent.com/hamcrest/JavaHamcrest/master/LICENSE.txt'.toURL().getText()) {
+		bundle "org.hamcrest:hamcrest:$hamcrestVersion"
 	}
 }
 
