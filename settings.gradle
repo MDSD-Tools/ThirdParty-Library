@@ -1,0 +1,20 @@
+pluginManagement{
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == 'org.standardout.bnd-platform') {
+                useModule('org.standardout:bnd-platform:1.8.1')
+            }
+        }
+    }
+    repositories {
+        // We can get rid of this private package registry, once the new version of bnd-platform has been released
+        maven {
+            url "https://maven.pkg.github.com/sdkrach/bnd-platform"
+            credentials {
+                username = githubUser
+                password = githubToken
+            }
+        }
+        jcenter()
+    }
+}
