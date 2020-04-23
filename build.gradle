@@ -1,39 +1,21 @@
-buildscript {
-	repositories {
-		maven {
-			url "https://maven.pkg.github.com/sdkrach/bnd-platform"
-			credentials {
-				username = githubUser
-				password = githubToken
-			}
-		}
-		jcenter()
-	}
-	dependencies {
-		classpath 'org.standardout:bnd-platform:1.8.1'
-	}
+plugins {
+	id 'org.standardout.bnd-platform'
 }
-
-apply plugin: 'org.standardout.bnd-platform'
 
 repositories {
 	mavenCentral()
 }
 
-def providerName = 'tools.mdsd.thirdparty-library'
-def spiflyVersion = "1.2.3"
-def guiceVersion = "4.2.3"
-def javatuplesVersion = '1.2'
-def byteBuddyVersion = '1.10.9'
-def mockitoVersion = '3.3.3'
-def hamcrestVersion = '2.2'
-
-defaultTasks 'clean', 'bundles', 'copyPatchedBundle', 'patchSpiFlyP2Inf', 'updateSite'
+defaultTasks 'clean', 'updateSite'
 
 platform {
+	categoryId = platformCategoryId
+	categoryName = platformCategoryName
+
 	useBndHashQualifiers = false
 	useFeatureHashQualifiers = false
-	eclipseMirror = 'http://ftp.halifax.rwth-aachen.de/eclipse/technology/epp/downloads/release/2019-06/R/eclipse-java-2019-06-R-linux-gtk-x86_64.tar.gz'
+	generatePlatformFeature = false
+	eclipseMirror = eclipseDownloadUrl
 
 	feature(id: 'org.javatuples.feature',
 			name: 'Javatuples Feature',
@@ -57,7 +39,7 @@ platform {
 			version: guiceVersion,
 			provider: providerName,
 			license: 'https://raw.githubusercontent.com/google/guice/master/COPYING'.toURL().getText()) {
-		plugin "com.google.inject:guice:$guiceVersion:no_aop" , {
+		bundle "com.google.inject:guice:$guiceVersion:no_aop" , {
 			exclude group: 'aopalliance', module: 'aopalliance'
 			exclude group: 'javax.inject', module: 'javax.inject'
 			exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
@@ -116,6 +98,7 @@ platform {
 			}
 		}
 	}
+
 	feature(id: 'org.hamcrest.feature',
 			name: 'Hamcrest Matchers',
 			version: hamcrestVersion,
@@ -125,15 +108,16 @@ platform {
 	}
 }
 
-task copyPatchedBundle(type: Copy) {
+task copySpiFlyBundleToPatch(type: Copy) {
 	from file("build/plugins/org.apache.aries.spifly.dynamic.bundle_${spiflyVersion}.jar")
 	into file("build/tmp/plugins/")
 }
 
-task patchSpiFlyP2Inf(type: Zip) {
+task patchSpiFlyP2Inf(type: Zip, dependsOn: copySpiFlyBundleToPatch) {
 	archiveFileName = "org.apache.aries.spifly.dynamic.bundle_${spiflyVersion}.jar"
 	destinationDirectory = file("build/plugins")
 	from zipTree("build/tmp/plugins/org.apache.aries.spifly.dynamic.bundle_${spiflyVersion}.jar")
 	from "org.apache.aries.spifly.dynamic.bundle.p2inf.patch"
 }
 
+bundleFeatures.dependsOn(patchSpiFlyP2Inf)
