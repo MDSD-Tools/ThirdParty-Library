@@ -77,22 +77,24 @@ platform {
 		plugin "net.bytebuddy:byte-buddy-agent:$byteBuddyVersion"
 	}
 
-	bundle "org.mockito:mockito-core:$mockitoVersion", {
-		exclude group: 'org.objenesis', module: 'objenesis'
-		exclude group: 'net.bytebuddy', module: 'byte-buddy'
-		exclude group: 'net.bytebuddy', module: 'byte-buddy-agent'
-	}
-
-	bundle "org.mockito:mockito-junit-jupiter:$mockitoVersion", {
-		exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
-		exclude group: 'org.mockito', module: 'mockito-core'
-	}
-
 	feature(id: 'org.mockito.core-with-junit-extension.feature',
 			name: 'Mockito with JUnit5 Extension',
 			version: mockitoVersion,
 			provider: providerName,
 			license: 'https://raw.githubusercontent.com/mockito/mockito/release/3.x/LICENSE'.toURL().getText()) {
+		bundle "org.mockito:mockito-core:$mockitoVersion", {
+			exclude group: 'org.objenesis', module: 'objenesis'
+			exclude group: 'net.bytebuddy', module: 'byte-buddy'
+			exclude group: 'net.bytebuddy', module: 'byte-buddy-agent'
+		}
+
+		bundle "org.mockito:mockito-junit-jupiter:$mockitoVersion", {
+			exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
+			exclude group: 'org.mockito', module: 'mockito-core'
+		}
+
+		// We merge all the mockito extension to one JAR, as the Mockito OSGI Manifest does not export some of
+		// the packages needed by the extension(s).
 		merge (failOnDuplicate: false, collectServices: true) {
 			match {
 				it.group == 'org.mockito'
@@ -103,11 +105,14 @@ platform {
 				bundleName = 'Mockito'
 				version = mockitoVersion
 
-				instruction 'Import-Package', 'net.bytebuddy.*;version="[1.6.0,2.0)"'
-				instruction 'Import-Package', 'org.objenesis;version="[2.5,3.0)"'
-				instruction 'Import-Package', '*;resolution:=optional'
-				instruction 'Export-Package', '!org.mockito.internal.*'
-				instruction 'Export-Package', "org.mockito.*;version=$mockitoVersion"
+				// Adapted from:
+				// https://github.com/mockito/mockito/blob/release/3.x/gradle/mockito-core/osgi.gradle
+
+				optionalImport '*'
+				prependImport 'net.bytebuddy.*;version="[1.6.0,2.0)"'
+				prependImport 'org.objenesis;version="[2.5,3.0)"'
+
+				instruction 'Export-Package',"!org.mockito.internal.*,org.mockito.*;version=$mockitoVersion"
 			}
 		}
 	}
