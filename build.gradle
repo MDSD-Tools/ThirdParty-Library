@@ -77,20 +77,25 @@ platform {
 		plugin "net.bytebuddy:byte-buddy-agent:$byteBuddyVersion"
 	}
 
+	bundle "org.mockito:mockito-core:$mockitoVersion", {
+		exclude group: 'org.objenesis', module: 'objenesis'
+		exclude group: 'net.bytebuddy', module: 'byte-buddy'
+		exclude group: 'net.bytebuddy', module: 'byte-buddy-agent'
+	}
+
+	bundle "org.mockito:mockito-junit-jupiter:$mockitoVersion", {
+		exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
+		exclude group: 'org.mockito', module: 'mockito-core'
+	}
+
 	feature(id: 'org.mockito.core-with-junit-extension.feature',
 			name: 'Mockito with JUnit5 Extension',
 			version: mockitoVersion,
 			provider: providerName,
 			license: 'https://raw.githubusercontent.com/mockito/mockito/release/3.x/LICENSE'.toURL().getText()) {
 		merge (failOnDuplicate: false, collectServices: true) {
-			bundle "org.mockito:mockito-core:$mockitoVersion", {
-				exclude group: 'org.objenesis', module: 'objenesis'
-				exclude group: 'net.bytebuddy', module: 'byte-buddy'
-				exclude group: 'net.bytebuddy', module: 'byte-buddy-agent'
-			}
-			bundle "org.mockito:mockito-junit-jupiter:$mockitoVersion", {
-				exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
-				exclude group: 'org.mockito', module: 'mockito-core'
+			match {
+				it.group == 'org.mockito'
 			}
 
 			bnd {
