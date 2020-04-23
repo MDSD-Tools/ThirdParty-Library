@@ -3,8 +3,8 @@ buildscript {
 		maven {
 			url "https://maven.pkg.github.com/sdkrach/bnd-platform"
 			credentials {
-				username = githubUser ?: System.getenv("GITHUB_PACKAGES_USER")
-				password = githubToken ?: System.getenv("GITHUB_PACKAGES_TOKEN")
+				username = githubUser
+				password = githubToken
 			}
 		}
 		jcenter()
