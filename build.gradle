@@ -21,7 +21,7 @@ platform {
 			name: 'Javatuples Feature',
 			version: javatuplesVersion,
 			provider: providerName,
-			license: 'https://raw.githubusercontent.com/javatuples/javatuples/master/LICENSE.txt'.toURL().getText()) {
+			license: "https://raw.githubusercontent.com/javatuples/javatuples/javatuples-$javatuplesVersion/LICENSE.txt".toURL().getText()) {
 		bundle "org.javatuples:javatuples:$javatuplesVersion"
 	}
 	
@@ -29,7 +29,7 @@ platform {
 			name: 'Apache Aries SPI Fly Dynamic Bundle',
 			version: spiflyVersion,
 			provider: providerName,
-			license: 'http://svn.apache.org/repos/asf/aries/trunk/spi-fly/LICENSE'.toURL().getText()) {
+			license: "https://raw.githubusercontent.com/apache/aries/spifly-$spiflyVersion/LICENSE".toURL().getText()) {
 		bundle 'org.apache.aries:org.apache.aries.util:1.1.1'
 		bundle "org.apache.aries.spifly:org.apache.aries.spifly.dynamic.bundle:$spiflyVersion"
 	}
@@ -38,7 +38,7 @@ platform {
 			name: 'Google Guice Feature',
 			version: guiceVersion,
 			provider: providerName,
-			license: 'https://raw.githubusercontent.com/google/guice/master/COPYING'.toURL().getText()) {
+			license: "https://raw.githubusercontent.com/google/guice/$guiceVersion/COPYING".toURL().getText()) {
 		bundle "com.google.inject:guice:$guiceVersion:no_aop" , {
 			exclude group: 'aopalliance', module: 'aopalliance'
 			exclude group: 'javax.inject', module: 'javax.inject'
@@ -54,7 +54,7 @@ platform {
 			name: 'Byte-Buddy',
 			version: byteBuddyVersion,
 			provider: providerName,
-			license: 'https://raw.githubusercontent.com/raphw/byte-buddy/master/LICENSE'.toURL().getText()) {
+			license: "https://raw.githubusercontent.com/raphw/byte-buddy/byte-buddy-$byteBuddyVersion/LICENSE".toURL().getText()) {
 		plugin "net.bytebuddy:byte-buddy:$byteBuddyVersion"
 		plugin "net.bytebuddy:byte-buddy-agent:$byteBuddyVersion"
 	}
@@ -63,7 +63,7 @@ platform {
 			name: 'Mockito with JUnit5 Extension',
 			version: mockitoVersion,
 			provider: providerName,
-			license: 'https://raw.githubusercontent.com/mockito/mockito/release/3.x/LICENSE'.toURL().getText()) {
+			license: "https://raw.githubusercontent.com/mockito/mockito/v$mockitoVersion/LICENSE".toURL().getText()) {
 		bundle "org.mockito:mockito-core:$mockitoVersion", {
 			exclude group: 'org.objenesis', module: 'objenesis'
 			exclude group: 'net.bytebuddy', module: 'byte-buddy'
@@ -103,7 +103,7 @@ platform {
 			name: 'Hamcrest Matchers',
 			version: hamcrestVersion,
 			provider: providerName,
-			license: 'https://raw.githubusercontent.com/hamcrest/JavaHamcrest/master/LICENSE.txt'.toURL().getText()) {
+			license: "https://raw.githubusercontent.com/hamcrest/JavaHamcrest/v$hamcrestVersion/LICENSE.txt".toURL().getText()) {
 		bundle "org.hamcrest:hamcrest:$hamcrestVersion"
 	}
 }
