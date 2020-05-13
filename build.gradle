@@ -48,6 +48,7 @@ platform {
 			exclude group: 'org.checkerframework', module: 'checker-qual'
 			exclude group: 'org.codehaus.mojo', module: 'animal-sniffer-annotations'
 		}
+		bundle "com.google.inject.extensions:guice-assistedinject:$guiceVersion"
 	}
 
 	feature(id: 'net.bytebuddy.byte-buddy.feature',
