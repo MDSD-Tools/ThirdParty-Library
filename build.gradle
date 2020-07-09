@@ -51,6 +51,14 @@ platform {
 		bundle "com.google.inject.extensions:guice-assistedinject:$guiceVersion"
 	}
 
+	feature(id: 'io.vavr.vavr.feature',
+			name: 'Vavr.io Feature',
+			version: vavrVersion,
+			provider: providerName,
+			license: "https://raw.githubusercontent.com/vavr-io/vavr/v$vavrVersion/LICENSE".toURL().getText()) {
+		bundle "io.vavr:vavr:$vavrVersion"
+	}
+
 	feature(id: 'net.bytebuddy.byte-buddy.feature',
 			name: 'Byte-Buddy',
 			version: byteBuddyVersion,
