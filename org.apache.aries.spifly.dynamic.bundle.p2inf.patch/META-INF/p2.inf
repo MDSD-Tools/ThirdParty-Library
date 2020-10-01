@@ -16,7 +16,7 @@ units.0.instructions.configure=org.eclipse.equinox.p2.touchpoint.eclipse.setStar
                                org.eclipse.equinox.p2.touchpoint.eclipse.markStarted(started:true);
 units.0.hostRequirements.1.namespace=osgi.bundle
 units.0.hostRequirements.1.name=org.apache.aries.spifly.dynamic.bundle
-units.0.hostRequirements.1.range=[1.2.3,1.2.3]
+units.0.hostRequirements.1.range=[$version$,$version$]
 units.0.hostRequirements.1.greedy=false
 units.0.hostRequirements.2.namespace=org.eclipse.equinox.p2.eclipse.type
 units.0.hostRequirements.2.name=bundle
@@ -24,5 +24,5 @@ units.0.hostRequirements.2.range=[1.0.0,2.0.0)
 units.0.hostRequirements.2.greedy=false
 units.0.requires.1.namespace=osgi.bundle
 units.0.requires.1.name=org.apache.aries.spifly.dynamic.bundle
-units.0.requires.1.range=[1.2.3,1.2.3]
+units.0.requires.1.range=[$version$,$version$]
 units.0.requires.1.greedy=false
