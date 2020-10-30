@@ -51,6 +51,55 @@ platform {
 		bundle "com.google.inject.extensions:guice-assistedinject:$guiceVersion"
 	}
 
+	feature(id: 'com.google.dagger.feature',
+			name: 'Google Dagger Feature',
+			version: daggerVersion,
+			provider: providerName,
+			license: "https://raw.githubusercontent.com/google/dagger/dagger-$daggerVersion/LICENSE.txt".toURL().getText()) {
+		bundle "com.google.dagger:dagger:$daggerVersion"		
+	}
+
+	feature(id: 'com.google.auto.factory-annotations.feature',
+			name: 'Google Auto Factory Annotations Feature',
+			version: autoFactoryRepackageVersion,
+			provider: providerName,
+			license: "https://raw.githubusercontent.com/google/auto/auto-factory-$autoFactoryVersion/LICENSE".toURL().getText()) {
+
+		bundle "com.google.auto.factory:auto-factory:$autoFactoryVersion", {
+			exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
+			exclude group: 'com.google.j2objc', module: 'j2objc-annotations'
+			exclude group: 'com.google.errorprone', module: 'javac-shaded'
+			exclude group: 'com.google.guava', module: 'guava'
+			exclude group: 'com.google.googlejavaformat', module: 'google-java-format'
+			exclude group: 'com.google.testing.compile', module: 'compile-testing'
+			exclude group: 'junit', module: 'junit'
+			exclude group: 'com.google.truth', module: 'truth'
+			exclude group: 'javax.inject', module: 'javax.inject'
+			exclude group: 'com.google.code.findbugs', module: 'jsr305'
+			exclude group: 'org.checkerframework', module: 'checker-compat-qual'
+			exclude group: 'com.google.auto.value', module: 'auto-value'
+			exclude group: 'com.google.auto.service', module: 'auto-service'
+			exclude group: 'net.ltgt.gradle.incap', module: 'incap'
+			exclude group: 'net.ltgt.gradle.incap', module: 'incap-processor'
+		}
+
+		merge (failOnDuplicate: false, collectServices: false) {
+			match {
+				it.group == 'com.google.auto.factory' || it.group == 'com.google.auto'
+			}
+
+			bnd {
+				symbolicName = 'com.google.auto.factory-annotations'
+				bundleName = 'Auto-Factory'
+				version = autoFactoryRepackageVersion
+
+				optionalImport '*'
+
+				instruction 'Export-Package',"com.google.auto.factory;version=$autoFactoryRepackageVersion"
+			}
+		}
+	}
+
 	feature(id: 'io.vavr.vavr.feature',
 			name: 'Vavr.io Feature',
 			version: vavrVersion,
@@ -130,3 +179,17 @@ task patchSpiFlyP2Inf(type: Zip, dependsOn: copySpiFlyBundleToPatch) {
 }
 
 bundleFeatures.dependsOn(patchSpiFlyP2Inf)
+
+task copyAutoFactoryBundleToPatch(type: Copy) {
+	from file("build/plugins/com.google.auto.factory-annotations_${autoFactoryRepackageVersion}.autowrapped.jar")
+	into file("build/tmp/plugins/")
+}
+
+task removeAnnotationProcessorFromJar(type: Zip, dependsOn: copyAutoFactoryBundleToPatch) {
+	archiveFileName = "com.google.auto.factory-annotations_${autoFactoryRepackageVersion}.autowrapped.jar"
+	destinationDirectory = file("build/plugins")
+	from zipTree("build/tmp/plugins/com.google.auto.factory-annotations_${autoFactoryRepackageVersion}.autowrapped.jar")
+	excludes = ['com/google/auto/factory/processor/**', 'META-INF/services/', 'META-INF/maven/']
+}
+
+bundleFeatures.dependsOn(removeAnnotationProcessorFromJar)
