@@ -59,6 +59,14 @@ platform {
 		bundle "com.google.dagger:dagger:$daggerVersion"		
 	}
 
+	feature(id: 'org.jgrapht.feature',
+			name: 'JGraphT Core Feature',
+			version: jgraphtCoreVersion,
+			provider: providerName,
+			license: "https://raw.githubusercontent.com/jgrapht/jgrapht/jgrapht-$jgraphtCoreVersion/license-EPL.txt".toURL().getText()) {
+		bundle "org.jgrapht:jgrapht-core:$jgraphtCoreVersion"		
+	}
+
 	feature(id: 'com.google.auto.factory-annotations.feature',
 			name: 'Google Auto Factory Annotations Feature',
 			version: autoFactoryRepackageVersion,
